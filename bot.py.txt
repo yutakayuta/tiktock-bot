@@ -4,7 +4,7 @@ from aiogram.filters import CommandStart
 import aiohttp
 
 # Вставь сюда токен от BotFather
-BOT_TOKEN = "ВСТАВЬ_СВОЙ_ТОКЕН_ОТ_BOTFATHER"
+BOT_TOKEN = "8128329443:AAGFAO4jXH5_aJzP3ek446K--Xs4Kk9YlRM"
 
 bot = Bot(token=BOT_TOKEN)
 dp = Dispatcher()
