@@ -1,0 +1,45 @@
+import asyncio
+from aiogram import Bot, Dispatcher, types
+from aiogram.filters import CommandStart
+import aiohttp
+
+# Вставь сюда токен от BotFather
+BOT_TOKEN = "ВСТАВЬ_СВОЙ_ТОКЕН_ОТ_BOTFATHER"
+
+bot = Bot(token=BOT_TOKEN)
+dp = Dispatcher()
+
+# Стартовое сообщение
+@dp.message(CommandStart())
+async def start(message: types.Message):
+    await message.answer("👋 Привет! Отправь ссылку на TikTok, и я скачаю видео!")
+
+# Обработка сообщений с ссылкой
+@dp.message()
+async def handle_tiktok(message: types.Message):
+    url = message.text.strip()
+
+    if "tiktok.com" not in url:
+        await message.answer("❌ Это не ссылка на TikTok.")
+        return
+
+    try:
+        # Скачиваем видео через бесплатный API
+        api_url = f"https://api.tiklydown.me/api/download?url={url}"
+        async with aiohttp.ClientSession() as session:
+            async with session.get(api_url) as resp:
+                data = await resp.json()
+
+        video_url = data["video"]["noWatermark"]
+        await message.answer_video(video_url, caption="✅ Вот твоё видео!")
+
+    except Exception as e:
+        await message.answer("⚠️ Не удалось скачать видео.")
+        print(e)
+
+# Запуск бота
+async def main():
+    await dp.start_polling(bot)
+
+if __name__		 == "__main__":
+    asyncio.run(main())
