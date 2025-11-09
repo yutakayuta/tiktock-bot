@@ -14,7 +14,7 @@ dp = Dispatcher()
 async def start(message: types.Message):
     await message.answer("👋 Привет! Отправь ссылку на TikTok, и я скачаю видео!")
 
-# Обработка сообщений с ссылкой
+# Обработка ссылок на TikTok
 @dp.message()
 async def handle_tiktok(message: types.Message):
     url = message.text.strip()
@@ -24,7 +24,6 @@ async def handle_tiktok(message: types.Message):
         return
 
     try:
-        # Скачиваем видео через бесплатный API
         api_url = f"https://api.tiklydown.me/api/download?url={url}"
         async with aiohttp.ClientSession() as session:
             async with session.get(api_url) as resp:
@@ -37,9 +36,8 @@ async def handle_tiktok(message: types.Message):
         await message.answer("⚠️ Не удалось скачать видео.")
         print(e)
 
-# Запуск бота
 async def main():
     await dp.start_polling(bot)
 
-if __name__		 == "__main__":
+if __name__ == "__main__":
     asyncio.run(main())
